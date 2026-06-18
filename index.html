@@ -537,7 +537,7 @@ INSTRUCTIONS:
 IMPORTANT: Retourne UNIQUEMENT le JSON valide, sans texte supplémentaire.`;
 
                 // Appeler le backend local MediScan
-                const response = await fetch('http://localhost:8787/api/analyze', {
+                const response = await fetch('/api/analyze', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

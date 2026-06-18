@@ -1,6 +1,7 @@
 // Backend MediScan - Analyse Gemini
 // Utilise Google Generative AI et accepte les deux types de clés
 
+const path = require('path');
 const express = require('express');
 const cors = require('cors');
 const { GoogleGenerativeAI } = require('@google/generative-ai');
@@ -10,6 +11,11 @@ const PORT = process.env.PORT || 8787;
 
 app.use(cors());
 app.use(express.json());
+app.use(express.static(__dirname));
+
+function sendPage(fileName) {
+  return (req, res) => res.sendFile(path.join(__dirname, fileName));
+}
 
 app.use((err, req, res, next) => {
   if (err && err instanceof SyntaxError && 'body' in err) {
@@ -21,6 +27,11 @@ app.use((err, req, res, next) => {
 
   return next(err);
 });
+
+app.get('/', sendPage('index.html'));
+app.get('/mobile', sendPage('mobile.html'));
+app.get('/test', sendPage('Test.html'));
+app.get('/tester', sendPage('Testeur.html'));
 
 const localDiseaseLibrary = [
   {
@@ -189,8 +200,12 @@ app.get('/health', (req, res) => {
   res.json({ status: 'ok', message: 'MediScan Backend is running' });
 });
 
-app.listen(PORT, () => {
-  console.log(`🏥 MediScan Backend running on http://localhost:${PORT}`);
-  console.log(`📝 POST http://localhost:${PORT}/api/analyze`);
-  console.log(`✅ Health check: http://localhost:${PORT}/health`);
-});
+module.exports = app;
+
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`🏥 MediScan Backend running on http://localhost:${PORT}`);
+    console.log(`📝 POST http://localhost:${PORT}/api/analyze`);
+    console.log(`✅ Health check: http://localhost:${PORT}/health`);
+  });
+}

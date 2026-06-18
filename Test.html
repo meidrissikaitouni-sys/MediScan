@@ -503,7 +503,7 @@ INSTRUCTIONS:
 IMPORTANT: Retourne UNIQUEMENT le JSON valide, sans texte supplémentaire.`;
 
                 // Appeler le backend local MediScan
-                const response = await fetch('http://localhost:8787/api/analyze', {
+                const response = await fetch('/api/analyze', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -596,7 +596,7 @@ IMPORTANT: Retourne UNIQUEMENT le JSON valide, sans texte supplémentaire.`;
             const dot = document.getElementById('backendDot');
             const text = document.getElementById('backendText');
             try {
-                const res = await fetch('http://localhost:8787/health', { cache: 'no-store' });
+                const res = await fetch('/health', { cache: 'no-store' });
                 if (!res.ok) throw new Error('no');
                 const json = await res.json();
                 dot.style.background = '#22C55E';
